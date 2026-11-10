@@ -13,4 +13,8 @@
 
 <a href="https://github.com/lloydaq/DataSentry"><picture><source media="(prefers-color-scheme: dark)" srcset="cards/repo-datasentry-dark.svg"><img src="cards/repo-datasentry-light.svg" width="100%" alt="DataSentry: a local-first ML dataset diagnostics tool. Python, FastAPI, Pydantic, pandas, NumPy, scikit-learn."></picture></a>
 
+<a href="https://github.com/lloydaq/flowcast"><picture><source media="(prefers-color-scheme: dark)" srcset="cards/repo-flowcast-dark.svg"><img src="cards/repo-flowcast-light.svg" width="100%" alt="Flowcast: traffic speed forecasting for 207 Los Angeles highway sensors, 15 to 60 minutes ahead. Python, LightGBM, DCRNN, FastAPI, React."></picture></a>
+
+<a href="https://github.com/lloydaq/CampusSignal-pro"><picture><source media="(prefers-color-scheme: dark)" srcset="cards/repo-campussignal-pro-dark.svg"><img src="cards/repo-campussignal-pro-light.svg" width="100%" alt="CampusSignal Pro: a multi-college campus platform for academic management, student communities, events, notices and campus issues."></picture></a>
+
 <picture><source media="(prefers-color-scheme: dark)" srcset="cards/graph-dark.svg"><img src="cards/graph-light.svg" width="100%" alt="Contribution graph for the last year."></picture>
