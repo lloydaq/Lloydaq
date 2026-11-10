@@ -73,6 +73,9 @@ FEATURED = [
      "stack": "Python, FastAPI, Pydantic, Ollama, Trafilatura, HTTPX"},
     {"repo": "DataSentry", "title": "DataSentry",
      "stack": "Python, FastAPI, Pydantic, pandas, NumPy, scikit-learn"},
+    {"repo": "flowcast", "title": "Flowcast",
+     "stack": "Python, LightGBM, DCRNN, FastAPI, React"},
+    {"repo": "CampusSignal-pro", "title": "CampusSignal Pro"},
 ]
 
 # ---------------------------------------------------------------- tokens
@@ -507,7 +510,7 @@ def activity(theme: str, data: dict, t0: float) -> Card:
 
 
 def repo_card(theme: str, spec: dict, repo: dict, t0: float) -> Card:
-    desc = wrap((spec.get("description") or repo.get("description") or "").strip(), "body", W - 2 * PAD - 60, 3)
+    desc = wrap((spec.get("description") or repo.get("description") or "").strip(), "body", W - 2 * PAD - 60, 4)
     rows = []
     if spec.get("stack"):
         rows.append(("Stack", spec["stack"]))
