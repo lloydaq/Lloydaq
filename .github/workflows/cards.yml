@@ -1,0 +1,79 @@
+name: Refresh profile cards
+
+on:
+  schedule:
+    - cron: "23 1 * * *" # daily, 01:23 UTC
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/render_cards.py
+      - fonts/**
+      - assets/**
+      - .github/workflows/cards.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-cards
+  cancel-in-progress: true
+
+jobs:
+  cards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install fonttools
+        run: pip install fonttools brotli
+
+      - name: Refresh contribution data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api graphql -f login="$GITHUB_REPOSITORY_OWNER" -f query='
+            query($login: String!) {
+              user(login: $login) {
+                login
+                contributionsCollection {
+                  contributionCalendar {
+                    totalContributions
+                    weeks { contributionDays { date contributionCount } }
+                  }
+                }
+                repositories(first: 100, ownerAffiliations: OWNER, privacy: PUBLIC) {
+                  nodes {
+                    name description url stargazerCount forkCount pushedAt
+                    primaryLanguage { name }
+                  }
+                }
+              }
+            }' > "$RUNNER_TEMP/contributions.json"
+          # Keep yesterday's file if the response is not the shape the script reads.
+          python - "$RUNNER_TEMP/contributions.json" <<'PY'
+          import json, sys
+          user = json.load(open(sys.argv[1]))["data"]["user"]
+          weeks = user["contributionsCollection"]["contributionCalendar"]["weeks"]
+          assert len(weeks) >= 52 and user["repositories"]["nodes"], "unexpected response"
+          json.dump({"data": {"user": user}}, open("data/contributions.json", "w"), indent=1)
+          PY
+
+      - name: Render cards
+        run: python scripts/render_cards.py
+
+      - name: Commit cards
+        run: |
+          git add data/contributions.json cards
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Refresh contribution data and cards"
+          git push
