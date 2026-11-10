@@ -4,7 +4,7 @@
    "login": "lloydaq",
    "contributionsCollection": {
     "contributionCalendar": {
-     "totalContributions": 140,
+     "totalContributions": 203,
      "weeks": [
       {
        "contributionDays": [
@@ -650,7 +650,7 @@
        "contributionDays": [
         {
          "date": "2026-03-29",
-         "contributionCount": 1
+         "contributionCount": 2
         },
         {
          "date": "2026-03-30",
@@ -786,7 +786,7 @@
         },
         {
          "date": "2026-04-28",
-         "contributionCount": 5
+         "contributionCount": 0
         },
         {
          "date": "2026-04-29",
@@ -1166,7 +1166,7 @@
         },
         {
          "date": "2026-07-20",
-         "contributionCount": 3
+         "contributionCount": 6
         },
         {
          "date": "2026-07-21",
@@ -1330,7 +1330,7 @@
         },
         {
          "date": "2026-08-25",
-         "contributionCount": 1
+         "contributionCount": 2
         },
         {
          "date": "2026-08-26",
@@ -1546,7 +1546,7 @@
        "contributionDays": [
         {
          "date": "2026-10-11",
-         "contributionCount": 5
+         "contributionCount": 6
         },
         {
          "date": "2026-10-12",
@@ -1566,7 +1566,7 @@
         },
         {
          "date": "2026-10-16",
-         "contributionCount": 7
+         "contributionCount": 10
         },
         {
          "date": "2026-10-17",
@@ -1578,19 +1578,19 @@
        "contributionDays": [
         {
          "date": "2026-10-18",
-         "contributionCount": 4
+         "contributionCount": 5
         },
         {
          "date": "2026-10-19",
-         "contributionCount": 11
+         "contributionCount": 12
         },
         {
          "date": "2026-10-20",
-         "contributionCount": 7
+         "contributionCount": 10
         },
         {
          "date": "2026-10-21",
-         "contributionCount": 17
+         "contributionCount": 23
         },
         {
          "date": "2026-10-22",
@@ -1598,11 +1598,11 @@
         },
         {
          "date": "2026-10-23",
-         "contributionCount": 7
+         "contributionCount": 14
         },
         {
          "date": "2026-10-24",
-         "contributionCount": 11
+         "contributionCount": 21
         }
        ]
       },
@@ -1610,11 +1610,11 @@
        "contributionDays": [
         {
          "date": "2026-10-25",
-         "contributionCount": 13
+         "contributionCount": 17
         },
         {
          "date": "2026-10-26",
-         "contributionCount": 0
+         "contributionCount": 1
         },
         {
          "date": "2026-10-27",
@@ -1622,15 +1622,15 @@
         },
         {
          "date": "2026-10-28",
-         "contributionCount": 1
+         "contributionCount": 2
         },
         {
          "date": "2026-10-29",
-         "contributionCount": 0
+         "contributionCount": 1
         },
         {
          "date": "2026-10-30",
-         "contributionCount": 1
+         "contributionCount": 2
         },
         {
          "date": "2026-10-31",
@@ -1650,7 +1650,7 @@
         },
         {
          "date": "2026-11-03",
-         "contributionCount": 2
+         "contributionCount": 3
         },
         {
          "date": "2026-11-04",
@@ -1658,11 +1658,11 @@
         },
         {
          "date": "2026-11-05",
-         "contributionCount": 2
+         "contributionCount": 4
         },
         {
          "date": "2026-11-06",
-         "contributionCount": 2
+         "contributionCount": 4
         },
         {
          "date": "2026-11-07",
@@ -1674,15 +1674,15 @@
        "contributionDays": [
         {
          "date": "2026-11-08",
-         "contributionCount": 12
+         "contributionCount": 14
         },
         {
          "date": "2026-11-09",
-         "contributionCount": 6
+         "contributionCount": 12
         },
         {
          "date": "2026-11-10",
-         "contributionCount": 16
+         "contributionCount": 26
         }
        ]
       }
@@ -1697,52 +1697,10 @@
       "url": "https://github.com/lloydaq/TND-The-News-Detector",
       "stargazerCount": 1,
       "forkCount": 0,
+      "pushedAt": "2026-10-23T07:37:18Z",
       "primaryLanguage": {
        "name": "Python"
-      },
-      "pushedAt": "2026-10-23T07:37:18Z"
-     },
-     {
-      "name": "CampusSignal-pro",
-      "description": "A multi-college campus platform for academic management, student communities, events, notices, and campus issues.",
-      "url": "https://github.com/lloydaq/CampusSignal-pro",
-      "stargazerCount": 1,
-      "forkCount": 0,
-      "primaryLanguage": {
-       "name": "Python"
-      },
-      "pushedAt": "2026-11-10T09:53:55Z"
-     },
-     {
-      "name": "lloyd-portfolio",
-      "description": "Personal portfolio showcasing my AI/ML projects and engineering work",
-      "url": "https://github.com/lloydaq/lloyd-portfolio",
-      "stargazerCount": 0,
-      "forkCount": 0,
-      "primaryLanguage": {
-       "name": "JavaScript"
-      },
-      "pushedAt": "2026-10-20T11:11:43Z"
-     },
-     {
-      "name": "Lloydaq",
-      "description": "My personal GitHub profile \u2014 showcasing my projects, contributions, and journey in AI/ML engineering.",
-      "url": "https://github.com/lloydaq/Lloydaq",
-      "stargazerCount": 0,
-      "forkCount": 0,
-      "primaryLanguage": null,
-      "pushedAt": "2026-11-10T12:38:09Z"
-     },
-     {
-      "name": "flowcast",
-      "description": " Traffic speed forecasting for 207 Los Angeles highway sensors (METR-LA), 15\u201360 min ahead. Leakage-tested features, baselines, LightGBM and a DCRNN graph network, compared on identical rows with bootstrap significance. FastAPI backend and a React dashboard that replays June 2012: each forecast shown against what actually happened.",
-      "url": "https://github.com/lloydaq/flowcast",
-      "stargazerCount": 0,
-      "forkCount": 0,
-      "primaryLanguage": {
-       "name": "Python"
-      },
-      "pushedAt": "2026-11-10T12:04:56Z"
+      }
      },
      {
       "name": "CampusSignal",
@@ -1750,10 +1708,10 @@
       "url": "https://github.com/lloydaq/CampusSignal",
       "stargazerCount": 0,
       "forkCount": 0,
+      "pushedAt": "2026-10-19T07:59:43Z",
       "primaryLanguage": {
        "name": "Python"
-      },
-      "pushedAt": "2026-10-19T07:59:43Z"
+      }
      },
      {
       "name": "DataSentry",
@@ -1761,10 +1719,52 @@
       "url": "https://github.com/lloydaq/DataSentry",
       "stargazerCount": 0,
       "forkCount": 0,
+      "pushedAt": "2026-10-20T09:53:54Z",
       "primaryLanguage": {
        "name": "Python"
-      },
-      "pushedAt": "2026-10-20T09:53:54Z"
+      }
+     },
+     {
+      "name": "lloyd-portfolio",
+      "description": "Personal portfolio showcasing my AI/ML projects and engineering work",
+      "url": "https://github.com/lloydaq/lloyd-portfolio",
+      "stargazerCount": 0,
+      "forkCount": 0,
+      "pushedAt": "2026-10-20T11:11:43Z",
+      "primaryLanguage": {
+       "name": "JavaScript"
+      }
+     },
+     {
+      "name": "CampusSignal-pro",
+      "description": "A multi-college campus platform for academic management, student communities, events, notices, and campus issues.",
+      "url": "https://github.com/lloydaq/CampusSignal-pro",
+      "stargazerCount": 1,
+      "forkCount": 0,
+      "pushedAt": "2026-11-10T09:53:55Z",
+      "primaryLanguage": {
+       "name": "Python"
+      }
+     },
+     {
+      "name": "flowcast",
+      "description": " Traffic speed forecasting for 207 Los Angeles highway sensors (METR-LA), 15\u201360 min ahead. Leakage-tested features, baselines, LightGBM and a DCRNN graph network, compared on identical rows with bootstrap significance. FastAPI backend and a React dashboard that replays June 2012: each forecast shown against what actually happened.",
+      "url": "https://github.com/lloydaq/flowcast",
+      "stargazerCount": 0,
+      "forkCount": 0,
+      "pushedAt": "2026-11-10T12:04:56Z",
+      "primaryLanguage": {
+       "name": "Python"
+      }
+     },
+     {
+      "name": "Lloydaq",
+      "description": "My personal GitHub profile \u2014 showcasing my projects, contributions, and journey in AI/ML engineering.",
+      "url": "https://github.com/lloydaq/Lloydaq",
+      "stargazerCount": 0,
+      "forkCount": 0,
+      "pushedAt": "2026-11-10T15:01:07Z",
+      "primaryLanguage": null
      }
     ]
    }
