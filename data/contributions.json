@@ -4,7 +4,7 @@
    "login": "lloydaq",
    "contributionsCollection": {
     "contributionCalendar": {
-     "totalContributions": 213,
+     "totalContributions": 223,
      "weeks": [
       {
        "contributionDays": [
@@ -1686,6 +1686,10 @@
         },
         {
          "date": "2026-11-11",
+         "contributionCount": 10
+        },
+        {
+         "date": "2026-11-12",
          "contributionCount": 0
         }
        ]
@@ -1767,9 +1771,20 @@
       "url": "https://github.com/lloydaq/Lloydaq",
       "stargazerCount": 0,
       "forkCount": 0,
-      "pushedAt": "2026-11-10T15:39:00Z",
+      "pushedAt": "2026-11-11T07:47:30Z",
       "primaryLanguage": {
        "name": "Python"
+      }
+     },
+     {
+      "name": "inkshift",
+      "description": "A reusable TypeScript theme-switching library featuring organic ink-splat transitions, reversible animations, and seamless light, dark, and system themes. Built for React and the modern web.",
+      "url": "https://github.com/lloydaq/inkshift",
+      "stargazerCount": 0,
+      "forkCount": 0,
+      "pushedAt": "2026-11-11T17:06:21Z",
+      "primaryLanguage": {
+       "name": "TypeScript"
       }
      }
     ]
