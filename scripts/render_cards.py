@@ -97,25 +97,31 @@ TOOLKIT = [
     ["React", "TypeScript", "JavaScript", "Ollama", "HTTPX", "Trafilatura", "Git", "GitHub Actions"],
 ]
 
+# Repositories left out of the "Lately" timeline.
+LATELY_SKIP = {"Lloydaq"}
+LATELY_COUNT = 5
+
 # Section headers between blocks of the README: (id, number, title, note).
 SECTIONS = [
     ("toolkit", "01", "Toolkit", "what I reach for"),
     ("signal", "02", "Signal", "last 12 months"),
-    ("work", "03", "Selected work", "{n} projects"),
-    ("city", "04", "Contribution city", "one tower per day"),
+    ("lately", "03", "Lately", "most recent pushes"),
+    ("work", "04", "Selected work", "{n} projects"),
+    ("city", "05", "Contribution city", "one tower per day"),
 ]
 
 # ---------------------------------------------------------------- tokens
 
 THEMES = {
-    "dark": dict(ground="#07080d", sheet="#0e1018", sheet2="#151824", ink="#f3eee6",
-                 ink2="#9b98a3", rule="#1f2230", rule2="#343849",
-                 amber="#ffb547", ember="#ff7a45", rose="#ff4d8d", violet="#9b7bff",
-                 cyan="#3fd8ff", lime="#9cf26b", glow=1.0),
-    "light": dict(ground="#fbf8f2", sheet="#ffffff", sheet2="#f1ede5", ink="#15151c",
-                  ink2="#5d5a64", rule="#e4dfd5", rule2="#c9c3b7",
-                  amber="#c27400", ember="#d9480f", rose="#d6246b", violet="#6a4ce0",
-                  cyan="#0786b3", lime="#3f8f12", glow=0.55),
+    # Muted, warm accents: colour marks meaning, it doesn't shout.
+    "dark": dict(ground="#0c0d11", sheet="#131419", sheet2="#1a1c22", ink="#ece7de",
+                 ink2="#8f8b84", rule="#202229", rule2="#30333b",
+                 amber="#d8a55e", ember="#cf8862", rose="#cc8096", violet="#9d94d4",
+                 cyan="#82b4c6", lime="#a5bd82", glow=0.42, grain=0.06),
+    "light": dict(ground="#f7f4ee", sheet="#fdfcf9", sheet2="#efebe3", ink="#1b1b20",
+                  ink2="#66625b", rule="#e3ded4", rule2="#cbc5b9",
+                  amber="#a2661c", ember="#ad5934", rose="#a34c66", violet="#5c50a8",
+                  cyan="#2e6f86", lime="#507a2e", glow=0.32, grain=0.045),
 }
 HUES = ["amber", "rose", "violet", "cyan", "ember", "lime"]
 
@@ -365,8 +371,8 @@ class Card:
         w = measure(label, style, size) + (34 if dot else 22)
         c = self.col(hue)
         self.add(f'<g{self.anim("up", delay)}>'
-                 f'<path d="{rr(x, y, w, h, h / 2)}" fill="{c}" fill-opacity=".09" stroke="{c}" '
-                 f'stroke-opacity=".38"/>')
+                 f'<path d="{rr(x, y, w, h, h / 2)}" fill="{c}" fill-opacity=".06" stroke="{c}" '
+                 f'stroke-opacity=".26"/>')
         if dot:
             self.add(f'<circle cx="{n(x + 13)}" cy="{n(y + h / 2)}" r="3.2" fill="{c}"/>')
         self.add("</g>")
@@ -433,6 +439,13 @@ class Card:
                      f'fill="{c["ground"]}" stroke="{edge}"/>')
         body = "".join(self.parts)
         if self.frame:
+            # Fine film grain and a hairline sheen on the top edge: texture, not glow.
+            self.defs.append('<filter id="grain" x="0" y="0" width="100%" height="100%">'
+                             '<feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" stitchTiles="stitch"/>'
+                             '<feColorMatrix values="0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.4 -.45"/></filter>')
+            sheen = self.lingrad([(0, "ink", 0), (.5, "ink", .22 if self.theme == "dark" else .5), (1, "ink", 0)])
+            body += (f'<rect width="{n(self.w)}" height="{n(self.h)}" filter="url(#grain)" opacity="{n(c["grain"])}"/>'
+                     f'<rect x="40" y="0" width="{n(self.w - 80)}" height="1" fill="{sheen}" opacity=".5"/>')
             self.defs.append(f'<clipPath id="cardclip"><rect width="{n(self.w)}" height="{n(self.h)}" rx="16"/></clipPath>')
             body = f'<g clip-path="url(#cardclip)">{body}</g>'
         defs = f'<defs>{"".join(self.defs)}</defs>' if self.defs else ""
@@ -579,16 +592,16 @@ def hero(theme: str, data: dict, st: dict, t0: float) -> Card:
     dark = theme == "dark"
 
     # -- atmosphere ---------------------------------------------------------
-    aurora(card, [(150, 40, 360, "violet", .55), (620, 70, 330, "rose", .42),
-                  (760, 330, 300, "amber", .38), (330, 380, 300, "cyan", .30)], t0)
-    dot_grid(card, 0, 0, W, 300, 24, .14 if dark else .2, t0)
+    aurora(card, [(150, 40, 360, "violet", .4), (640, 90, 330, "amber", .34),
+                  (330, 400, 300, "cyan", .22)], t0)
+    dot_grid(card, 0, 0, W, 300, 24, .1 if dark else .16, t0)
 
     # Synthwave floor: converging rails and rungs that run toward the viewer.
     hz, fl = 318, h
-    floor_g = card.lingrad([(0, "violet", 0), (1, "rose", .9 if dark else .6)], 0, 0, 0, 1)
+    floor_g = card.lingrad([(0, "ink", 0), (1, "ink", .16 if dark else .2)], 0, 0, 0, 1)
     card.defs.append(f'<clipPath id="floor"><rect x="0" y="{hz}" width="{W}" height="{fl - hz}"/></clipPath>')
     card.add(f'<g clip-path="url(#floor)"{card.anim("fade", t0 + .2)}>')
-    card.add(f'<rect x="0" y="{hz}" width="{W}" height="{fl - hz}" fill="{card.lingrad([(0, "violet", .0), (1, "violet", .22 if dark else .1)], 0, 0, 0, 1)}"/>')
+    card.add(f'<rect x="0" y="{hz}" width="{W}" height="{fl - hz}" fill="{card.lingrad([(0, "ground", 0), (1, "sheet2", .9)], 0, 0, 0, 1)}"/>')
     vx = W / 2
     rails = "".join(f"M{n(vx + k * 18)} {hz}L{n(vx + k * 150)} {fl}" for k in range(-14, 15))
     card.add(f'<path d="{rails}" stroke="{floor_g}" stroke-width="1" fill="none"/>')
@@ -598,13 +611,13 @@ def hero(theme: str, data: dict, st: dict, t0: float) -> Card:
         ys = hz + (fl - hz) * f ** 2.2
         name = card.keyframe(f"rung{i}", f"0%{{transform:translateY({n(hz - ys)}px);opacity:0}}"
                                           f"15%{{opacity:1}}100%{{transform:translateY({n(fl - ys)}px);opacity:1}}")
-        card.add(f'<path d="M0 {n(ys)}H{W}" stroke="{c["rose"]}" stroke-opacity="{n(.25 + .5 * f)}" '
-                 f'stroke-width="{n(.6 + f * 1.1)}"{card.loop(name, 3.2, -3.2 * (1 - f) ** .45, "cubic-bezier(.55,0,1,.45)")}/>')
+        card.add(f'<path d="M0 {n(ys)}H{W}" stroke="{c["ink"]}" stroke-opacity="{n(.04 + .12 * f)}" '
+                 f'stroke-width="{n(.6 + f * .6)}"{card.loop(name, 3.2, -3.2 * (1 - f) ** .45, "cubic-bezier(.55,0,1,.45)")}/>')
     card.add("</g>")
     # Horizon glow
-    card.add(f'<rect x="0" y="{hz - 1}" width="{W}" height="2" fill="{card.lingrad([(0, "violet", 0), (.3, "rose", 1), (.5, "amber", 1), (.7, "rose", 1), (1, "violet", 0)])}"'
+    card.add(f'<rect x="0" y="{hz - .5}" width="{W}" height="1" fill="{card.lingrad([(0, "ink", 0), (.3, "ink", .25), (.5, "amber", .9), (.7, "ink", .25), (1, "ink", 0)])}"'
              f'{card.anim("gx", t0 + .3)}/>')
-    card.add(f'<ellipse cx="{vx}" cy="{hz}" rx="380" ry="26" fill="{card.radgrad("rose", .5 * c["glow"])}"{card.anim("fade", t0 + .4)}/>')
+    card.add(f'<ellipse cx="{vx}" cy="{hz}" rx="380" ry="26" fill="{card.radgrad("amber", .35 * c["glow"])}"{card.anim("fade", t0 + .4)}/>')
 
     # -- top HUD bar -------------------------------------------------------
     card.text(PAD, 40, f"{data['login'].upper()}://PROFILE", "monob", fill="ink2", kind="fade", delay=t0 + .1, size=11.5)
@@ -621,11 +634,11 @@ def hero(theme: str, data: dict, st: dict, t0: float) -> Card:
 
     # -- right: neural constellation in an orbit ----------------------------
     ox, oy, orad = 668, 186, 118
-    orbit = card.lingrad([(0, "amber", 1), (.5, "rose", 1), (1, "violet", 1)], 0, 0, 1, 1)
+    orbit = card.lingrad([(0, "amber", .9), (.5, "ink2", .6), (1, "violet", .8)], 0, 0, 1, 1)
     card.add(f'<g{card.anim("blur", t0 + .35)}>')
-    card.add(f'<circle cx="{ox}" cy="{oy}" r="{orad + 34}" fill="{card.radgrad("violet", .22 * c["glow"] + .05, .5)}"/>')
+    card.add(f'<circle cx="{ox}" cy="{oy}" r="{orad + 34}" fill="{card.radgrad("violet", .16 * c["glow"] + .03, .5)}"/>')
     card.add(f'<g{card.loop("spin", 40, 0, origin="50% 50%")}><circle cx="{ox}" cy="{oy}" r="{orad}" fill="none" stroke="{orbit}" '
-             f'stroke-width="1.5" stroke-dasharray="2 7" stroke-linecap="round"/></g>')
+             f'stroke-width="1.2" stroke-dasharray="1.5 7" stroke-linecap="round"/></g>')
     card.add(f'<g{card.loop("spinr", 26, 0, origin="50% 50%")}><circle cx="{ox}" cy="{oy}" r="{orad - 14}" fill="none" '
              f'stroke="{c["ink"]}" stroke-opacity=".18" stroke-dasharray="60 14 4 14"/>'
              f'<circle cx="{ox + orad - 14}" cy="{oy}" r="3.5" fill="{c["amber"]}"/></g>')
@@ -670,16 +683,16 @@ def hero(theme: str, data: dict, st: dict, t0: float) -> Card:
                 d = "M" + "L".join(f"{n(px)} {n(py)}" for px, py in path)
                 hue = ["amber", "rose", "cyan", "violet"][p % 4]
                 dur = 2.4 + rnd() * 1.4
-                card.add(f'<path class="smil" d="{d}" stroke="{c[hue]}" stroke-width="1.6" fill="none" stroke-opacity="0" '
+                card.add(f'<path class="smil" d="{d}" stroke="{c[hue]}" stroke-width="1.4" fill="none" stroke-opacity="0" '
                          f'pathLength="1" stroke-dasharray=".14 .86">'
                          f'<animate attributeName="stroke-dashoffset" values=".14;-.86" dur="{n(dur)}s" '
                          f'begin="{n(t0 + 1 + p * .37)}s" repeatCount="indefinite"/>'
-                         f'<set attributeName="stroke-opacity" to=".95" begin="{n(t0 + 1 + p * .37)}s"/></path>')
+                         f'<set attributeName="stroke-opacity" to=".75" begin="{n(t0 + 1 + p * .37)}s"/></path>')
         for li, layer in enumerate(nodes):
             for k, (px, py) in enumerate(layer):
                 hue = ["cyan", "violet", "rose", "amber"][li]
                 dl = t0 + .7 + li * .12 + k * .04
-                card.add(f'<g{card.anim("pop", dl)}><circle cx="{n(px)}" cy="{n(py)}" r="9" fill="{c[hue]}" fill-opacity=".14"'
+                card.add(f'<g{card.anim("pop", dl)}><circle cx="{n(px)}" cy="{n(py)}" r="9" fill="{c[hue]}" fill-opacity=".09"'
                          f'{card.loop("breathe", 2.6 + (li + k) % 3 * .6, -(li * 0.7 + k * .45), "ease-in-out", origin="50% 50%")}/>'
                          f'<circle cx="{n(px)}" cy="{n(py)}" r="4.2" fill="{c["ground"]}" stroke="{c[hue]}" stroke-width="1.8"/></g>')
         card.text(ox - 72, oy + 104, "x", "mono", fill="ink2", anchor="middle", kind="fade", delay=t0 + 1, size=11)
@@ -689,7 +702,7 @@ def hero(theme: str, data: dict, st: dict, t0: float) -> Card:
     text_w = ox - orad - 40 - PAD
     size = STYLES["display"][1]
     size = min(size, size * text_w / measure(PROFILE["name"], "display"))
-    name_g = card.lingrad([(0, "ink", 1), (.42, "ink", 1), (.5, "amber", 1), (.58, "rose", 1), (.66, "ink", 1), (1, "ink", 1)],
+    name_g = card.lingrad([(0, "ink", 1), (.44, "ink", 1), (.52, "amber", 1), (.6, "ink", 1), (1, "ink", 1)],
                           0, 0, W, 0, units="userSpaceOnUse", spread="pad",
                           extra="" if STATIC else
                           f'<animateTransform attributeName="gradientTransform" type="translate" values="-{W} 0;{W} 0" '
@@ -701,7 +714,7 @@ def hero(theme: str, data: dict, st: dict, t0: float) -> Card:
     # Offset outline copy for depth, then the gradient-swept fill.
     card.chars["sans"].update(PROFILE["name"])
     card.add(f'<text x="{PAD + 3}" y="{n(96 + size * .86 + 3)}" font-size="{n(size)}" fill="none" '
-             f'stroke="{c["rose"]}" stroke-opacity=".55" stroke-width="1"{card.anim("rise", t0 + .28, "t-display")}>{esc(PROFILE["name"])}</text>')
+             f'stroke="{c["ink2"]}" stroke-opacity=".35" stroke-width="1"{card.anim("rise", t0 + .28, "t-display")}>{esc(PROFILE["name"])}</text>')
     card.add(f'<text x="{PAD}" y="{n(96 + size * .86)}" class="t-display{"" if STATIC else " rise"}" font-size="{n(size)}" '
              f'fill="{name_g}"{"" if STATIC else f" style=\"animation-delay:{n(t0 + .2)}s\""}>{esc(PROFILE["name"])}</text>')
     card.add("</g>")
@@ -749,7 +762,7 @@ def tile(theme: str, spec: dict, t0: float) -> Card:
     card = Card(f"tile-{spec['id']}", TILE_W, h, theme, f"{spec['label']}: {spec['sub']}")
     c = card.c
     hue = spec["hue"]
-    aurora(card, [(30, 10, 150, hue, .45)], t0)
+    aurora(card, [(30, 10, 150, hue, .32)], t0)
     card.add(f'<path d="{rr(20, 20, 40, 40, 12)}" fill="{c[hue]}" fill-opacity=".14" stroke="{c[hue]}" stroke-opacity=".5"'
              f'{card.anim("pop", t0)}/>')
     card.icon(29, 29, 22, ICONS[spec["icon"]], color=hue, delay=t0 + .1)
@@ -799,7 +812,7 @@ def toolkit(theme: str, t0: float) -> Card:
     h = 132
     card = Card("toolkit", W, h, theme, "Toolkit: " + ", ".join(sum(TOOLKIT, [])) + ".")
     c = card.c
-    aurora(card, [(80, 66, 260, "cyan", .25), (760, 66, 260, "rose", .25)], t0)
+    aurora(card, [(80, 66, 260, "cyan", .16), (760, 66, 260, "amber", .16)], t0)
     # Luminance mask that fades the rows out at both edges.
     wid = card.id("mk")
     card.defs.append(f'<linearGradient id="{wid}"><stop offset="0" stop-color="#fff" stop-opacity="0"/>'
@@ -823,8 +836,8 @@ def toolkit(theme: str, t0: float) -> Card:
             for ix, w, name, hue in items:
                 X = ix + rep * period
                 card.chars["mono"].update(name)
-                parts.append(f'<path d="{rr(X, y, w, 34, 17)}" fill="{c[hue]}" fill-opacity=".08" stroke="{c[hue]}" '
-                             f'stroke-opacity=".35"/><circle cx="{n(X + 16)}" cy="{n(y + 17)}" r="4" fill="{c[hue]}"/>'
+                parts.append(f'<path d="{rr(X, y, w, 34, 17)}" fill="{c[hue]}" fill-opacity=".05" stroke="{c[hue]}" '
+                             f'stroke-opacity=".24"/><circle cx="{n(X + 16)}" cy="{n(y + 17)}" r="4" fill="{c[hue]}"/>'
                              f'<text x="{n(X + 28)}" y="{n(y + 21.5)}" class="t-monob" font-size="13" fill="{c["ink"]}">{esc(name)}</text>')
         start = PAD if r == 0 else PAD - period / 2
         kf = card.keyframe(f"mq{r}", f"from{{transform:translateX(0)}}to{{transform:translateX({n(-period if r == 0 else period)}px)}}")
@@ -888,15 +901,14 @@ def activity(theme: str, data: dict, st: dict, t0: float) -> Card:
         card.text(x0 - 8, y + 4, str(v), "mono", fill="ink2", anchor="end", kind="fade", delay=t0 + .25, size=10.5)
     slot = (x1 - x0) / len(months)
     bwid = slot * .56
-    fill = card.lingrad([(0, "amber", 1), (.55, "rose", 1), (1, "violet", 1)], 0, top, 0, base, units="userSpaceOnUse")
-    gf = card.glow_filter(5)
+    fill = card.lingrad([(0, "amber", 1), (1, "amber", .35)], 0, top, 0, base, units="userSpaceOnUse")
     peak_i = max(range(len(months)), key=lambda i: months[i][2])
     for i, (year, month, total) in enumerate(months):
         cx = x0 + slot * (i + .5)
         dl = t0 + .4 + i * .05
         if total:
             hg = max(total * scale, 3)
-            card.add(f'<g filter="{gf}"><path d="{rr(cx - bwid / 2, base - hg, bwid, hg + 4, 4)}" fill="{fill}" '
+            card.add(f'<g><path d="{rr(cx - bwid / 2, base - hg, bwid, hg + 4, 4)}" fill="{fill}" '
                      f'clip-path="url(#basecl)"{card.anim("gy", dl)}/></g>')
             if i == peak_i or i == len(months) - 1 or total == max(t for *_, t in months[:-1] or [(0, 0, 0)]):
                 card.text(cx, base - hg - 9, str(total), "monob", anchor="middle", kind="fade", delay=dl + .6, size=12)
@@ -926,13 +938,69 @@ def activity(theme: str, data: dict, st: dict, t0: float) -> Card:
     card.text(W - PAD, 300, f"{days[0][0].day} {MONTHS[days[0][0].month - 1]} → {days[-1][0].day} {MONTHS[days[-1][0].month - 1]}",
               "mono", fill="ink2", anchor="end", kind="fade", delay=t0 + .6, size=10.5)
     card.rule(sx0, sy, sx1, "rule", delay=t0 + .6, dash="1 5")
-    pulse = card.lingrad([(0, "cyan", .5), (.6, "violet", 1), (1, "rose", 1)], sx0, 0, sx1, 0, units="userSpaceOnUse")
+    pulse = card.lingrad([(0, "ink2", .5), (.7, "violet", 1), (1, "amber", 1)], sx0, 0, sx1, 0, units="userSpaceOnUse")
     card.add(f'<path d="{d}" fill="none" stroke="{pulse}" stroke-width="1.8" stroke-linejoin="round" '
-             f'pathLength="1" filter="{gf}"{card.anim("draw", t0 + .7, dur=2.4)}/>')
+             f'pathLength="1"{card.anim("draw", t0 + .7, dur=2.4)}/>')
     if not STATIC:
         card.add(f'<circle class="smil" r="3.5" fill="{c["ink"]}" opacity="0"><animateMotion path="{d}" dur="6s" '
                  f'begin="{n(t0 + 3.1)}s" repeatCount="indefinite" calcMode="linear"/>'
                  f'<set attributeName="opacity" to="1" begin="{n(t0 + 3.1)}s"/></circle>')
+    return card
+
+
+# ---------------------------------------------------------------- lately
+
+
+def ago(d: dt.date, today: dt.date) -> str:
+    days = (today - d).days
+    if days <= 0:
+        return "today"
+    if days == 1:
+        return "yesterday"
+    if days < 14:
+        return f"{days} days ago"
+    if days < 60:
+        return f"{days // 7} weeks ago"
+    return f"{days // 30} months ago"
+
+
+def lately(theme: str, data: dict, t0: float) -> Card:
+    today = data["days"][-1][0]
+    repos = sorted((r for r in data["repos"].values() if r.get("pushedAt") and r["name"] not in LATELY_SKIP),
+                   key=lambda r: (r["pushedAt"], r["name"]), reverse=True)[:LATELY_COUNT]
+    row_h = 62
+    top = 30
+    h = top + len(repos) * row_h + 18
+    card = Card("lately", W, h, theme, "Most recently pushed repositories: " + "; ".join(
+        f"{r['name']}, {ago(dt.date.fromisoformat(r['pushedAt'][:10]), today)}" for r in repos) + ".")
+    c = card.c
+    aurora(card, [(W - 120, h / 2, 320, "violet", .14)], t0)
+    lx = PAD + 92                    # the timeline rail
+    card.add(f'<path d="M{lx} {top + 14}V{n(top + (len(repos) - 1) * row_h + 26)}" stroke="{c["rule2"]}" '
+             f'stroke-width="1.5"{card.anim("gy", t0)} />')
+    for i, r in enumerate(repos):
+        y = top + i * row_h
+        dl = t0 + .15 + i * .09
+        d = dt.date.fromisoformat(r["pushedAt"][:10])
+        hue = HUES[i % len(HUES)]
+        card.text(PAD, y + 25, f"{d.day} {MONTHS[d.month - 1]}", "monob", fill="ink", kind="up", delay=dl, size=13)
+        card.text(PAD, y + 42, ago(d, today), "mono", fill="ink2", kind="up", delay=dl + .03, size=10.5)
+        card.add(f'<g{card.anim("pop", dl + .05)}><circle cx="{lx}" cy="{y + 20}" r="6.5" fill="{c["ground"]}" '
+                 f'stroke="{c[hue]}" stroke-width="1.6"/><circle cx="{lx}" cy="{y + 20}" r="2.4" fill="{c[hue]}"/></g>')
+        if i == 0:
+            card.add(f'<circle cx="{lx}" cy="{y + 20}" r="13" fill="none" stroke="{c[hue]}" stroke-opacity=".6"'
+                     f'{card.loop("ping", 2.6, t0 + 1, "ease-out", origin="50% 50%")}/>')
+        nx = lx + 26
+        lang = (r.get("primaryLanguage") or {}).get("name") or ""
+        lang_w = measure(lang, "mono", 11) + 34 if lang else 0
+        card.text(nx, y + 25, r["name"], "title", kind="up", delay=dl + .05, size=16)
+        desc = wrap((r.get("description") or "").strip(), "small", W - PAD - nx - lang_w - 20, 1, 12.5)
+        if desc:
+            card.text(nx, y + 44, desc[0], "small", fill="ink2", kind="up", delay=dl + .08, size=12.5)
+        if lang:
+            card.chip(W - PAD - lang_w, y + 9, lang, "ink2" if lang == "Python" else hue, dl + .1, h=22, size=11)
+        if i < len(repos) - 1:
+            card.rule(nx, y + row_h - 2, W - PAD, "rule", delay=dl + .1)
     return card
 
 
@@ -1159,12 +1227,12 @@ def repo_card(theme: str, spec: dict, repo: dict, idx: int, total: int, t0: floa
     card = Card(f"repo-{spec['repo'].lower()}", W, h, theme,
                 f"Project {idx + 1} of {total}: {title} ({slug}). {' '.join(desc)} Stack: {', '.join(stack)}.")
     c = card.c
-    aurora(card, [(vx + vw / 2, h / 2, 280, hue, .5), (W - 60, 0, 260, hue, .18)], t0)
+    aurora(card, [(vx + vw / 2, h / 2, 280, hue, .3), (W - 60, 0, 260, hue, .12)], t0)
 
     # Visual panel
     vy, vh = 18, h - 36
     card.add(f'<g{card.anim("blur", t0 + .05)}><path d="{rr(vx, vy, vw, vh, 12)}" fill="{c["sheet"]}" fill-opacity=".8" '
-             f'stroke="{c[hue]}" stroke-opacity=".35"/></g>')
+             f'stroke="{c[hue]}" stroke-opacity=".22"/></g>')
     pid = card.id("vp")
     card.defs.append(f'<clipPath id="{pid}"><path d="{rr(vx, vy, vw, vh, 12)}"/></clipPath>')
     card.add(f'<g clip-path="url(#{pid})">')
@@ -1223,7 +1291,7 @@ def city(theme: str, data: dict, st: dict, t0: float) -> Card:
                 f"Isometric contribution city: {plural(total, 'contribution')} between "
                 f"{day_label(days[0][0])} and {day_label(days[-1][0])}; each tower is one day.")
     c = card.c
-    aurora(card, [(640, 300, 360, "violet", .35), (180, 120, 300, "cyan", .2), (720, 120, 260, "rose", .25)], t0)
+    aurora(card, [(640, 300, 360, "violet", .24), (180, 120, 300, "cyan", .12), (720, 120, 260, "amber", .16)], t0)
 
     first = days[0][0]
     start = first - dt.timedelta(days=(first.weekday() + 1) % 7)
@@ -1353,10 +1421,10 @@ def footer(theme: str, data: dict, t0: float) -> Card:
     h = 200
     card = Card("footer", W, h, theme, "Thanks for stopping by. Cards rendered from live GitHub data, refreshed daily.")
     c = card.c
-    aurora(card, [(W / 2, h, 420, "violet", .45), (120, h, 260, "amber", .3), (720, h, 260, "cyan", .3)], t0)
+    aurora(card, [(W / 2, h, 420, "violet", .28), (120, h, 260, "amber", .2), (720, h, 260, "cyan", .18)], t0)
     # Layered sine waves that scroll sideways.
-    for k, (hue, amp, wl, yy, dur, op) in enumerate((("violet", 14, 210, 150, 9, .7), ("rose", 10, 160, 158, 6.5, .8),
-                                                     ("amber", 7, 120, 166, 5, .9), ("cyan", 5, 90, 172, 4, .6))):
+    for k, (hue, amp, wl, yy, dur, op) in enumerate((("violet", 14, 210, 150, 9, .4), ("ink2", 10, 160, 158, 6.5, .35),
+                                                     ("amber", 7, 120, 166, 5, .6), ("cyan", 5, 90, 172, 4, .35))):
         pts = []
         x = -wl
         while x <= W + wl:
@@ -1365,7 +1433,7 @@ def footer(theme: str, data: dict, t0: float) -> Card:
         d = "M" + "L".join(pts)
         kf = card.keyframe(f"wv{k}", f"to{{transform:translateX({wl}px)}}")
         card.add(f'<g{card.anim("fade", t0 + k * .1)}><path d="{d}" fill="none" stroke="{c[hue]}" stroke-opacity="{op}" '
-                 f'stroke-width="{1.2 + k * .3}"{card.loop(kf, dur, 0, "linear", "normal" if k % 2 else "reverse")}/></g>')
+                 f'stroke-width="{1 + k * .15}"{card.loop(kf, dur, 0, "linear", "normal" if k % 2 else "reverse")}/></g>')
     card.text(W / 2, 66, "Thanks for scrolling.", "head", anchor="middle", kind="up", delay=t0 + .1, size=26)
     card.text(W / 2, 94, "Let’s build something that shows its work.", "state", fill="ink2", anchor="middle",
               kind="up", delay=t0 + .2, size=17)
@@ -1416,6 +1484,8 @@ def main() -> int:
         cards.append(toolkit(theme, 1.6))
         cards.append(section(theme, "signal", *secs["signal"], 1.7))
         cards.append(activity(theme, data, st, 1.8))
+        cards.append(section(theme, "lately", *secs["lately"], 2.1))
+        cards.append(lately(theme, data, 2.15))
         cards.append(section(theme, "work", *secs["work"], 2.2))
         cards += [repo_card(theme, f, data["repos"][f["repo"]], i, len(FEATURED), 2.3 + i * .35)
                   for i, f in enumerate(FEATURED)]

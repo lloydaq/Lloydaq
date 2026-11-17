@@ -13,7 +13,10 @@
 <picture><source media="(prefers-color-scheme: dark)" srcset="cards/section-signal-dark.svg"><img src="cards/section-signal-light.svg" width="100%" alt="02 — Signal"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="cards/activity-dark.svg"><img src="cards/activity-light.svg" width="100%" alt="Activity over the last 12 months: total contributions, contributions in the last 30 days, current and longest streak, active days, contributions per month and a daily pulse for the last 120 days."></picture>
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="cards/section-work-dark.svg"><img src="cards/section-work-light.svg" width="100%" alt="03 — Selected work"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="cards/section-lately-dark.svg"><img src="cards/section-lately-light.svg" width="100%" alt="03 — Lately"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="cards/lately-dark.svg"><img src="cards/lately-light.svg" width="100%" alt="Timeline of my five most recently pushed repositories, with dates, descriptions and languages."></picture>
+
+<picture><source media="(prefers-color-scheme: dark)" srcset="cards/section-work-dark.svg"><img src="cards/section-work-light.svg" width="100%" alt="04 — Selected work"></picture>
 <a href="https://github.com/lloydaq/TND-The-News-Detector"><picture><source media="(prefers-color-scheme: dark)" srcset="cards/repo-tnd-the-news-detector-dark.svg"><img src="cards/repo-tnd-the-news-detector-light.svg" width="100%" alt="01. Trustworthy News Detector: AI-assisted news analysis and misinformation detection. Python, FastAPI, Pydantic, Ollama, Trafilatura, HTTPX."></picture></a>
 <a href="https://github.com/lloydaq/DataSentry"><picture><source media="(prefers-color-scheme: dark)" srcset="cards/repo-datasentry-dark.svg"><img src="cards/repo-datasentry-light.svg" width="100%" alt="02. DataSentry: a local-first ML dataset diagnostics tool for data quality, leakage and suspicious labels, with explainable reports. Python, FastAPI, Pydantic, pandas, NumPy, scikit-learn."></picture></a>
 <a href="https://github.com/lloydaq/flowcast"><picture><source media="(prefers-color-scheme: dark)" srcset="cards/repo-flowcast-dark.svg"><img src="cards/repo-flowcast-light.svg" width="100%" alt="03. Flowcast: traffic speed forecasting for 207 Los Angeles highway sensors, 15 to 60 minutes ahead. Python, LightGBM, DCRNN, FastAPI, React."></picture></a>
@@ -31,7 +34,7 @@
 
 </details>
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="cards/section-city-dark.svg"><img src="cards/section-city-light.svg" width="100%" alt="04 — Contribution city"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="cards/section-city-dark.svg"><img src="cards/section-city-light.svg" width="100%" alt="05 — Contribution city"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="cards/city-dark.svg"><img src="cards/city-light.svg" width="100%" alt="Isometric contribution city for the last year: one tower per day, taller for more contributions, with the best week, average per active day and busiest weekday."></picture>
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="cards/footer-dark.svg"><img src="cards/footer-light.svg" width="100%" alt="Thanks for scrolling. Let’s build something that shows its work."></picture>
