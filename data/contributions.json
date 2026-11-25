@@ -4,7 +4,7 @@
    "login": "lloydaq",
    "contributionsCollection": {
     "contributionCalendar": {
-     "totalContributions": 378,
+     "totalContributions": 385,
      "weeks": [
       {
        "contributionDays": [
@@ -1682,7 +1682,11 @@
         },
         {
          "date": "2026-11-24",
-         "contributionCount": 0
+         "contributionCount": 2
+        },
+        {
+         "date": "2026-11-25",
+         "contributionCount": 5
         }
        ]
       }
@@ -1763,7 +1767,7 @@
       "url": "https://github.com/lloydaq/Lloydaq",
       "stargazerCount": 0,
       "forkCount": 0,
-      "pushedAt": "2026-11-23T09:12:12Z",
+      "pushedAt": "2026-11-24T11:04:01Z",
       "primaryLanguage": {
        "name": "Python"
       }
@@ -1778,6 +1782,15 @@
       "primaryLanguage": {
        "name": "TypeScript"
       }
+     },
+     {
+      "name": "Scamuraii",
+      "description": "Fire drills for scam calls: consented, realistic AI voice drills that train India's elderly to beat digital arrest and KYC scams in Kannada, Hindi and English. Built at ForgeX 2026 with Hey Koala and AWS Bedrock.",
+      "url": "https://github.com/lloydaq/Scamuraii",
+      "stargazerCount": 0,
+      "forkCount": 0,
+      "pushedAt": "2026-11-25T07:12:07Z",
+      "primaryLanguage": null
      }
     ]
    }
